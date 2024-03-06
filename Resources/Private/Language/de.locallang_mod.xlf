@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2014-06-02T11:48:33Z" product-name="sys_file_finder">
+        <header/>
+        <body>
+            <trans-unit id="mlang_tabs_tab" xml:space="preserve">
+                <source>File finder</source>
+                <target>Datei Suche</target>
+            </trans-unit>
+            <trans-unit id="mlang_labels_tablabel" xml:space="preserve">
+                <source>sys_file finder module</source>
+                <target>Datei Suche Modul</target>
+            </trans-unit>
+            <trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
+                <source>This modules helps finding the path for a specific sys_file by their uid.</source>
+                <target>Dieses Module hilft bei der Suche nach dem Pfad einer spezifischen "sys_file" Datei anhand ihrer UID.</target>
+            </trans-unit>
+            <trans-unit id="find.title">
+                <source>Find a sys_file by a frontend link</source>
+                <target>Finden einer Datei anhand des Frontend Links</target>
+            </trans-unit>
+            <trans-unit id="find.description">
+                <source>This TYPO3 module helps finding the location of a sys_file by analyzing the link shown in the frontend.</source>
+                <target>Dieses TYPO3 Modul hilft bei der Suche nach dem Pfad einer spezifischen "sys_file" Datei. Dabei kann der Link aus dem Frontend (mit "index.php?eID=dumpFile...") hier als Eingabe verwendet werden. Als Ausgabe erhält der Benutzer den Ordner Pfad der Datei.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

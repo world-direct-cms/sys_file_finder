@@ -1,0 +1,50 @@
+{
+    "name": "worlddirect/sys_file_finder",
+    "type": "typo3-cms-extension",
+    "description": "This extension contains a backend module to show the path of a sys_file entry with a specific id. Also it can use fal_securedownload extension links to determine the sys_file id.",
+    "keywords": [
+        "sys_file",
+        "fal_securedownload",
+        "backend module"
+    ],
+    "authors": [
+        {
+            "name": "Klaus Hörmann-Engl",
+            "role": "Developer",
+            "email": "kho@world-direct.at"
+        }
+    ],
+    "require": {
+        "typo3/cms-core": "^10.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "WorldDirect\\SysFileFinder\\": "Classes"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WorldDirect\\SysFileFinder\\Tests\\": "Tests"
+        }
+    },
+    "replace": {
+        "worlddirect/sys_file_finder": "self.version",
+        "typo3-ter/sys_file_finder": "self.version"
+    },
+    "config": {
+        "vendor-dir": ".Build/vendor",
+        "bin-dir": ".Build/bin",
+        "sort-packages": true,
+        "allow-plugins": {
+            "typo3/cms-composer-installers": true,
+            "typo3/class-alias-loader": true
+        }
+    },
+    "extra": {
+        "typo3/cms": {
+            "extension-key": "sys_file_finder",
+            "cms-package-dir": "{$vendor-dir}/typo3/cms",
+            "web-dir": ".Build/web"
+        }
+    }
+}

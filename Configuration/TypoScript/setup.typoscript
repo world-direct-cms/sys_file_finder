@@ -1,0 +1,12 @@
+module {
+    tx_sysfilefinder {
+        view {
+            templateRootPaths {
+                10 = EXT:sys_file_finder/Resources/Private/Backend/Templates/
+            }
+            layoutRootPaths {
+                10 = EXT:sys_file_finder/Resources/Private/Backend/Layouts/
+            }
+        }
+    }
+}
