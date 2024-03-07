@@ -28,8 +28,8 @@
         }
     },
     "replace": {
-        "worlddirect/Sysfilefinder": "self.version",
-        "typo3-ter/Sysfilefinder": "self.version"
+        "worlddirect/sysfilefinder": "self.version",
+        "typo3-ter/sysfilefinder": "self.version"
     },
     "config": {
         "vendor-dir": ".Build/vendor",
