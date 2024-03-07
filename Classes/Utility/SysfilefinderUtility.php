@@ -1,6 +1,6 @@
 <?php
 
-namespace WorldDirect\SysFileFinder\Utility;
+namespace WorldDirect\Sysfilefinder\Utility;
 
 use InvalidArgumentException;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -9,7 +9,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 
-class SysFileFinderUtility
+class SysfilefinderUtility
 {
     /**
      * This method receives a frontend link with "...index.php?eID=..."

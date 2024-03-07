@@ -1,13 +1,13 @@
 <?php
 
-namespace WorldDirect\SysFileFinder\Controller;
+namespace WorldDirect\Sysfilefinder\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use WorldDirect\SysFileFinder\Utility\SysFileFinderUtility;
+use WorldDirect\Sysfilefinder\Utility\SysfilefinderUtility;
 
-class SysFileFinderController extends ActionController
+class SysfilefinderController extends ActionController
 {
     /** @var string */
     // This is necessary in order to have a Backend Module with all the CSS and JS
@@ -26,8 +26,8 @@ class SysFileFinderController extends ActionController
         if ($searchData) {
             if (isset($searchData['link'])) {
 
-                /** @var SysFileFinderUtility $utility */
-                $utility = GeneralUtility::makeInstance(SysFileFinderUtility::class);
+                /** @var SysfilefinderUtility $utility */
+                $utility = GeneralUtility::makeInstance(SysfilefinderUtility::class);
 
                 // sys_file row
                 $row = $utility->getSysFileFromLink($searchData['link']);

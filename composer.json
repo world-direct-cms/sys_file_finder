@@ -1,5 +1,5 @@
 {
-    "name": "worlddirect/sys-file-finder",
+    "name": "worlddirect/Sysfilefinder",
     "type": "typo3-cms-extension",
     "description": "This extension contains a backend module to show the path of a sys_file entry with a specific id. Also it can use fal_securedownload extension links to determine the sys_file id.",
     "keywords": [
@@ -19,17 +19,17 @@
     },
     "autoload": {
         "psr-4": {
-            "WorldDirect\\SysFileFinder\\": "Classes"
+            "WorldDirect\\Sysfilefinder\\": "Classes"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "WorldDirect\\SysFileFinder\\Tests\\": "Tests"
+            "WorldDirect\\Sysfilefinder\\Tests\\": "Tests"
         }
     },
     "replace": {
-        "worlddirect/sys_file_finder": "self.version",
-        "typo3-ter/sys_file_finder": "self.version"
+        "worlddirect/Sysfilefinder": "self.version",
+        "typo3-ter/Sysfilefinder": "self.version"
     },
     "config": {
         "vendor-dir": ".Build/vendor",
@@ -42,7 +42,7 @@
     },
     "extra": {
         "typo3/cms": {
-            "extension-key": "sys_file_finder",
+            "extension-key": "sysfilefinder",
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
             "web-dir": ".Build/web"
         }

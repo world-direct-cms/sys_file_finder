@@ -1,20 +1,20 @@
 <?php
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
-    'SysFileFinder',
+    'sysfilefinder',
     'file',
     'find',
     'top',
     [
-        \WorldDirect\SysFileFinder\Controller\SysFileFinderController::class => 'index'
+        \WorldDirect\Sysfilefinder\Controller\SysfilefinderController::class => 'index'
     ],
     [
         'access' => 'user,group',
-        'icon' => 'EXT:sys_file_finder/Resources/Public/Icons/module-sysfilefinder.svg',
-        'labels' => 'LLL:EXT:sys_file_finder/Resources/Private/Language/locallang_mod.xlf',
+        'icon' => 'EXT:sysfilefinder/Resources/Public/Icons/module-sysfilefinder.svg',
+        'labels' => 'LLL:EXT:sysfilefinder/Resources/Private/Language/locallang_mod.xlf',
         'inheritNavigationComponentFromMainModule' => false
     ]
 );
 
 // Load static TS template
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('sys_file_finder', 'Configuration/TypoScript', 'sys_file_finder');
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile('sysfilefinder', 'Configuration/TypoScript', 'sysfilefinder');
