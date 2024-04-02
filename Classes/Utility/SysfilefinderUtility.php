@@ -2,64 +2,77 @@
 
 namespace WorldDirect\Sysfilefinder\Utility;
 
-use InvalidArgumentException;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
 
 class SysfilefinderUtility
 {
     /**
-     * This method receives a frontend link with "...index.php?eID=..."
-     * 
-     * @param string $link The link string containing "index.php"
-     * 
-     * @return array The "sys_file" row for the given uid
+     * @var ResourceFactory
      */
-    public function getSysFileFromLink(string $link): ?array
+    protected $resourceFactory;
+
+    /**
+     * @param ResourceFactory $resourceFactory
+     */
+    public function __construct(ResourceFactory $resourceFactory = null)
     {
-
-        /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-
-        /** @var QueryBuilder $qb */
-        $qb = $connectionPool->getQueryBuilderForTable('sys_file');
-
-        $uid = $this->getSysFileUidFromLink($link);
-
-        if ($uid) {
-            $result = $qb
-                ->select("*")
-                ->from('sys_file')
-                ->where(
-                    $qb->expr()->eq('uid', $uid)
-                )
-                ->execute()
-                ->fetchAllAssociative();
-            return $result;
-        } else {
-            return null;
-        }
+        $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
     /**
-     * Function parses the given link in order to get the sys_file uid.
+     * This method receives a frontend link with "...index.php?eID=..."
+     * It handles "f" and "p" parameters (file VS processedFile)
      * 
      * @param string $link The link string containing "index.php"
      * 
-     * @return int The sys_file uid
+     * @return string The file path of the file
      */
-    public function getSysFileUidFromLink(?string $link)
+    public function getSysFilePathFromLink(string $link): string
     {
-        if ($link) {
-            preg_match('/f=([\d]*)&token/m', $link, $matches);
-            if (isset($matches[1])) {
-                return $matches[1];
-            }
+        // Get the GET parameters array
+        $parameters = $this->getGetParametersFromUrl($link);
+
+        // File
+        if (isset($parameters['f'])) {
+            $file = $this->resourceFactory->getFileObject($parameters['f']);
         }
-        return null;
+        // Processed file
+        else if (isset($parameters['p'])) {
+            /** @var \TYPO3\CMS\Core\Resource\ProcessedFile $file */
+            $processedFile = GeneralUtility::makeInstance(ProcessedFileRepository::class)->findByUid($parameters['p']);
+            $file = $processedFile->getOriginalFile();
+        }
+
+        if (isset($file)) {
+            return $file->getIdentifier();
+        }
+
+        return '';
+    }
+
+    /**
+     * Method gets a full URL and return an array with all GET parameters
+     * where the key is the name of the parameter and the value is the
+     * value of the GET parameter.
+     * 
+     * @param string $url The full url
+     * 
+     * @return array Holding all GET parameters
+     */
+    private function getGetParametersFromUrl(string $url): array
+    {
+        $urlParts = parse_url($url);
+        $getParameters = explode("&", $urlParts['query']);
+        $parameters = [];
+        foreach ($getParameters as $parameter) {
+            $parts = explode('=', $parameter);
+            $parameters[$parts[0]] = $parts[1];
+        }
+        return $parameters;
     }
 
     /**
@@ -68,12 +81,12 @@ class SysfilefinderUtility
      * 
      * @return void 
      */
-    public function createFlashMessage(array $row)
+    public function createFlashMessage(string $path)
     {
         $message = GeneralUtility::makeInstance(
             FlashMessage::class,
-            'Pfad der Datei mit der "uid" ' . $row['uid'] . '"',
-            $row['identifier'],
+            $path,
+            'Pfad der Datei lautet:',
             \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
             true
         );

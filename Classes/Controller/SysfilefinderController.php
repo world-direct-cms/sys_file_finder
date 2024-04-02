@@ -29,16 +29,19 @@ class SysfilefinderController extends ActionController
                 /** @var SysfilefinderUtility $utility */
                 $utility = GeneralUtility::makeInstance(SysfilefinderUtility::class);
 
-                // sys_file row
-                $row = $utility->getSysFileFromLink($searchData['link']);
+                // path
+                $path = $utility->getSysFilePathFromLink($searchData['link']);
 
-                // Create flash message for result display
-                $utility->createFlashMessage($row[0]);
+                // Only show when the row is an array (this means that there is a result)
+                if ($path != '') {
+                    // Create flash message for result display
+                    $utility->createFlashMessage($path);
 
-                // Assign the search data link to the view to display in input element
-                $this->view->assignMultiple([
-                    'link' => $searchData['link'],
-                ]);
+                    // Assign the search data link to the view to display in input element
+                    $this->view->assignMultiple([
+                        'link' => $searchData['link'],
+                    ]);
+                }
             }
         }
     }
