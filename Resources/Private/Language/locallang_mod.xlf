@@ -7,7 +7,7 @@
                 <source>File finder</source>
             </trans-unit>
             <trans-unit id="mlang_labels_tablabel" xml:space="preserve">
-                <source>sys_file finder module</source>
+                <source>"sys_file" finder module</source>
             </trans-unit>
             <trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
                 <source>This modules helps finding the path for a specific sys_file by their uid.</source>

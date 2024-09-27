@@ -2,12 +2,19 @@
 
 namespace WorldDirect\Sysfilefinder\Utility;
 
+use Exception;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\ProcessedFileRepository;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
+class EmptyQueryPartException extends Exception{}
+class MissingQueryParametersException extends Exception{}
+class ResourceFileNotFoundException extends Exception{}
 class SysfilefinderUtility
 {
     /**
@@ -30,6 +37,7 @@ class SysfilefinderUtility
      * @param string $link The link string containing "index.php"
      * 
      * @return string The file path of the file
+     * @throws MissingQueryParametersException
      */
     public function getSysFilePathFromLink(string $link): string
     {
@@ -38,13 +46,25 @@ class SysfilefinderUtility
 
         // File
         if (isset($parameters['f'])) {
-            $file = $this->resourceFactory->getFileObject($parameters['f']);
+            try {
+                $file = $this->resourceFactory->getFileObject($parameters['f']);
+            } catch(Exception $e) {
+                // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($e);
+                throw new ResourceFileNotFoundException('There was no file found with the given "f" parameter value.', 3456982);
+            }
         }
         // Processed file
         else if (isset($parameters['p'])) {
             /** @var \TYPO3\CMS\Core\Resource\ProcessedFile $file */
-            $processedFile = GeneralUtility::makeInstance(ProcessedFileRepository::class)->findByUid($parameters['p']);
-            $file = $processedFile->getOriginalFile();
+            try {
+                $processedFile = GeneralUtility::makeInstance(ProcessedFileRepository::class)->findByUid($parameters['p']);
+                $file = $processedFile->getOriginalFile();
+            } catch(Exception $e) {
+                throw new ResourceFileNotFoundException('There was no processed file found with the given "p" parameter value.', 1095993);
+            }
+        } else {
+            // If there is no "f" or "l" parameter throw new MissingQueryParameterException
+            throw new MissingQueryParametersException('The given link does not have a "l" or "f" query parameter. Withouth one of these parameters TYPO3 cannot find a path to a file.', 900248);
         }
 
         if (isset($file)) {
@@ -62,10 +82,18 @@ class SysfilefinderUtility
      * @param string $url The full url
      * 
      * @return array Holding all GET parameters
+     * @throws EmptyQueryPartException
      */
     private function getGetParametersFromUrl(string $url): array
     {
         $urlParts = parse_url($url);
+
+        // Check if the urlParts have a 'query' part, if not throw an exception
+        if (!isset($urlParts['query'])) {
+            throw new EmptyQueryPartException('The given link does not have a query parameters attached. It must have a "f" or "p" parameter.', 486032);
+        }
+
+        // Explode the query parameters and return them
         $getParameters = explode("&", $urlParts['query']);
         $parameters = [];
         foreach ($getParameters as $parameter) {
@@ -73,25 +101,5 @@ class SysfilefinderUtility
             $parameters[$parts[0]] = $parts[1];
         }
         return $parameters;
-    }
-
-    /**
-     * 
-     * @param array $row The sys_file row from the database
-     * 
-     * @return void 
-     */
-    public function createFlashMessage(string $path)
-    {
-        $message = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            $path,
-            'Pfad der Datei lautet:',
-            \TYPO3\CMS\Core\Messaging\FlashMessage::OK,
-            true
-        );
-        $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-        $messageQueue = $flashMessageService->getMessageQueueByIdentifier();
-        $messageQueue->addMessage($message);
     }
 }

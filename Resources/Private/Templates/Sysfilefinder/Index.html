@@ -1,0 +1,33 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
+    <f:layout name="Default"></f:layout>
+
+    <f:section name="content">
+        <div class="container-fluid">
+            <h1><f:translate key="LLL:EXT:sysfilefinder/Resources/Private/Language/locallang_mod.xlf:find.title" /></h1>
+            <f:be.infobox title="Hinweis" state="-1"><f:translate key="LLL:EXT:sysfilefinder/Resources/Private/Language/locallang_mod.xlf:find.description" /></f:be.infobox>
+
+            <f:form action="index" object="{searchData}" name="searchData">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-12-xs mb-3">
+                        <div class="input-group">
+                            <f:form.textfield type="text" property="link" class="form-control" value="{link}" placeholder="{link}" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit">
+                                    <f:translate id="search">Suche starten</f:translate>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </f:form>
+        </div>
+        <div class="container-fluid" id="result">
+            <f:if condition="{path}">
+                <f:be.infobox title="Pfad zur Datei" state="0" iconName="actions-check-circle-alt">{path}</f:be.infobox>
+            </f:if>
+            <f:if condition="{error}">
+                <f:be.infobox title="Fehler" state="2" iconName="apps-pagetree-drag-place-denied">{error}</f:be.infobox>
+            </f:if>
+        </div>
+    </f:section>
+</html>
